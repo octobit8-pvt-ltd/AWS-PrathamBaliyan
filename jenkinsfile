@@ -16,7 +16,7 @@ pipeline {
                         // Creating EC2 Instance
                         def instanceId = bat(script: '''
                             aws ec2 run-instances --image-id ami-04b70fa74e45c3917 --count 1 --instance-type t2.micro --key-name pratham_baliyan --subnet-id subnet-05c8a47e3f7a5c54f --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=pratham_baliya}]"
-                            aws ec2 describe-instances --filters "Name=tag:Name,Values=pratham_baliyan" --query "Reservations[].Instances[].InstanceId" --output text
+                            aws ec2 describe-instances --filters "Name=tag:Name,Values=pratham_baliyan" --query "Reservations[*].Instances[*].InstanceId" --output text
                         ''', returnStdout: true).split('\n')[-1].trim()
                         
                         bat(script: "aws ec2 wait instance-running --instance-ids ${instanceId}")
